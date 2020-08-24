@@ -82,31 +82,31 @@
       const thisProduct = this;
 
       /* find the clickable trigger (the element that should react to clicking) */
-      const trigger = document.querySelector(select.menuProduct.clickable);
-      console.log('trigger: ', trigger);
+      thisProduct.trigger = thisProduct.element.querySelector(select.menuProduct.clickable);
 
       /* START: click event listener to trigger */
-      /*const triggerListener = */ trigger.addEventListener('click', function(){
+      /*const triggerListener = */ thisProduct.trigger.addEventListener('click', function (event) {
         console.log('clicked');
 
         /* prevent default action for event */
         event.preventDefault();
 
         /* toggle active class on element of thisProduct */
-        this.classList.toggle(classNames.menuProduct.wrapperActive);
+        thisProduct.element.classList.toggle(classNames.menuProduct.wrapperActive);
 
         /* find all active products */
-        const activeProducts = document.querySelectorAll(select.all.menuProductsActive);
+        const activeProducts = document.querySelectorAll('.product.' + classNames.menuProduct.wrapperActive);
         console.log('activeProducts: ', activeProducts);
 
         /* START LOOP: for each active product */
-        for(let activeProduct in activeProducts){
+        for (let activeProduct in activeProducts){
+          //console.log('thisProduct.element', thisProduct.element);
 
           /* START: if the active product isn't the element of thisProduct */
-          if(activeProduct != thisProduct){
+          if (activeProduct != thisProduct.element){
 
             /* remove class active for the active product */
-            activeProduct.classList.remove('active');
+            //activeProduct.classList.remove('active');  //<<<<<< póki co akordeon sam się nie zsuwa. Nie mogę usunąć klasy 'active'
 
             /* END: if the active product isn't the element of thisProduct */
           }
