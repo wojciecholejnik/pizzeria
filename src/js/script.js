@@ -90,11 +90,11 @@
       thisProduct.formInputs = thisProduct.form.querySelectorAll(select.all.formInputs);
       thisProduct.cartButton = thisProduct.element.querySelector(select.menuProduct.cartButton);
       thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
+      thisProduct.imageWrapper = thisProduct.element.querySelector(select.menuProduct.imageWrapper);
     }
 
     initAccordion(){
       const thisProduct = this;
-
       /* START: click event listener to trigger */
       thisProduct.trigger.addEventListener('click', function (event) {
         //console.log('clicked');
@@ -150,12 +150,12 @@
     processOrder(){
       const thisProduct = this;
       //console.log('processOrder START');
+
       /* read data from the form */
       const formData = utils.serializeFormToObject(thisProduct.form);
       //console.log('formData', formData);
 
       /*set variable price as thisProduct.data.price */
-
       let price = thisProduct.data.price;
 
       /* START LOOP: for each paramId in thisProduct.data.params */
@@ -180,12 +180,26 @@
 
             /* add price of option to variable price */
             price += option.price;
-            console.log('price: ', price);
+            //console.log('price: ', price);
           } else if (!optionSelected && option.default) {
-            /* deduct price of option from price */
+            /* reduct price of option from price */
             price -= option.price;
-          }
           /*END IF option is selected and is not default */
+          }
+
+          const optionImages = thisProduct.imageWrapper.querySelectorAll('.' + paramId + '-' + optionId);
+          //console.log('optionImages: ', optionImages);
+
+          /* START IF: (for images) if option is active all images should receive class active saved in classNames.menuProduct.imageVisible  */
+          if (optionSelected) {
+            for (let optionImage of optionImages) {
+              optionImage.classList.add(classNames.menuProduct.imageVisible);
+            }
+          } else {
+            for (let optionImage of optionImages) {
+              optionImage.classList.remove(classNames.menuProduct.imageVisible);
+            }
+          }
 
 
         /* END LOOP: for each optionID */
