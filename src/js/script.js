@@ -53,7 +53,7 @@
   };
 
   class Product {
-    constructor(id, data){
+    constructor (id, data) {
       const thisProduct = this;
 
       thisProduct.id = id;
@@ -63,12 +63,11 @@
       thisProduct.getElements();
       thisProduct.initAccordion();
       thisProduct.initOrderForm();
+      thisProduct.initAmountWidget();
       thisProduct.processOrder();
-
-      //console.log('new Product: ', thisProduct);
     }
 
-    renderInMenu(){
+    renderInMenu () {
       const thisProduct = this;
 
       /* generate HTML based on template */
@@ -82,7 +81,7 @@
       menuContainer.appendChild(thisProduct.element);
     }
 
-    getElements(){
+    getElements () {
       const thisProduct = this;
 
       thisProduct.trigger = thisProduct.element.querySelector(select.menuProduct.clickable);
@@ -91,9 +90,10 @@
       thisProduct.cartButton = thisProduct.element.querySelector(select.menuProduct.cartButton);
       thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
       thisProduct.imageWrapper = thisProduct.element.querySelector(select.menuProduct.imageWrapper);
+      thisProduct.amountWidgetElem = thisProduct.element.querySelector(select.menuProduct.amountWidget);
     }
 
-    initAccordion(){
+    initAccordion () {
       const thisProduct = this;
       /* START: click event listener to trigger */
       thisProduct.trigger.addEventListener('click', function (event) {
@@ -118,7 +118,7 @@
 
             /* remove class active for the active product */
             //console.log('activeProduct: ', activeProduct);
-            activeProduct.classList.remove('active');  //<<<<<< póki co akordeon sam się nie zsuwa. Nie mogę usunąć klasy 'active'
+            activeProduct.classList.remove('active');
 
             /* END: if the active product isn't the element of thisProduct */
           }
@@ -127,7 +127,7 @@
         /* END: click event listener to trigger */
       });
     }
-    initOrderForm(){
+    initOrderForm () {
       const thisProduct = this;
       //console.log('initOrderForm START');
 
@@ -147,7 +147,7 @@
         thisProduct.processOrder();
       });
     }
-    processOrder(){
+    processOrder () {
       const thisProduct = this;
       //console.log('processOrder START');
 
@@ -208,18 +208,90 @@
       /* END LOOP: for each paramID */
       }
       /* set content to html */
+      price *= thisProduct.amountWidget.value;
       thisProduct.priceElem.innerHTML = price;
+    }
+
+    initAmountWidget () {
+      const thisProduct = this;
+
+      thisProduct.amountWidget = new AmountWidget(thisProduct.amountWidgetElem);
+      thisProduct.amountWidgetElem.addEventListener('updated', function () {
+        thisProduct.processOrder();
+      });
     }
   }
 
+  class AmountWidget {
+    constructor (element) {
+      const thisWidget = this;
+
+      thisWidget.getElements(element);
+      thisWidget.value = settings.amountWidget.defaultValue;
+      thisWidget.setValue(thisWidget.input.value);
+      thisWidget.initActions();
+
+      //console.log('AmountWidget:', thisWidget);
+    }
+    getElements (element) {
+      const thisWidget = this;
+
+      thisWidget.element = element;
+      thisWidget.input = thisWidget.element.querySelector(select.widgets.amount.input);
+      thisWidget.linkDecrease = thisWidget.element.querySelector(select.widgets.amount.linkDecrease);
+      thisWidget.linkIncrease = thisWidget.element.querySelector(select.widgets.amount.linkIncrease);
+    }
+
+    setValue (value) {
+      const thisWidget = this;
+
+      const newValue = parseInt(value);
+
+      /*TODO: Add validation */
+      if (newValue !== thisWidget.value &&
+        newValue >= settings.amountWidget.defaultMin &&
+        newValue <= settings.amountWidget.defaultMax) {
+        thisWidget.value = newValue;
+        thisWidget.announce();
+      }
+      thisWidget.input.value = thisWidget.value;
+    }
+
+    initActions () {
+      const thisWidget = this;
+      thisWidget.input.addEventListener ('change', function () {
+        thisWidget.setValue(thisWidget.input.value);
+        console.log('change listener click');
+      });
+
+      thisWidget.linkDecrease.addEventListener('click', function (event) {
+        event.preventDefault();
+        thisWidget.setValue(thisWidget.value - 1);
+        console.log('less listener click');
+      });
+
+      thisWidget.linkIncrease.addEventListener('click', function (event) {
+        event.preventDefault();
+        thisWidget.setValue(thisWidget.value + 1);
+        console.log('more listener click');
+      });
+    }
+
+    announce () {
+      const thisWidget = this;
+
+      const event = new Event('updated');
+      thisWidget.element.dispatchEvent(event);
+    }
+  }
 
   const app = {
-    initMenu: function(){
+    initMenu: function () {
       const thisApp = this;
 
       console.log('thisApp.data: ', thisApp.data);
 
-      for(let productData in thisApp.data.products){
+      for (let productData in thisApp.data.products) {
         new Product(productData, thisApp.data.products[productData]);
       }
     },
@@ -230,7 +302,7 @@
       thisApp.data = dataSource;
     },
 
-    init: function(){
+    init: function () {
       const thisApp = this;
       console.log('*** App starting ***');
       console.log('thisApp:', thisApp);
