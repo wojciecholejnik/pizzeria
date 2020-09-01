@@ -103,11 +103,13 @@
 
       /* generate HTML based on template */
       const generatedHTML = templates.menuProduct(thisProduct.data);
-      //console.log('generatedHTML: ', generatedHTML);
+
       /* create element using util.createElementFromHTML */
       thisProduct.element = utils.createDOMFromHTML(generatedHTML);
+
       /* find menu container */
       const menuContainer = document.querySelector(select.containerOf.menu);
+
       /* add element to menu */
       menuContainer.appendChild(thisProduct.element);
     }
@@ -128,7 +130,6 @@
       const thisProduct = this;
       /* START: click event listener to trigger */
       thisProduct.trigger.addEventListener('click', function (event) {
-        //console.log('clicked');
 
         /* prevent default action for event */
         event.preventDefault();
@@ -138,17 +139,14 @@
 
         /* find all active products */
         const activeProducts = document.querySelectorAll('.product.' + classNames.menuProduct.wrapperActive);
-        //console.log('activeProducts: ', activeProducts);
 
         /* START LOOP: for each active product */
         for (let activeProduct of activeProducts){
-          //console.log('thisProduct.element', thisProduct.element);
 
           /* START: if the active product isn't the element of thisProduct */
           if (activeProduct != thisProduct.element){
 
             /* remove class active for the active product */
-            //console.log('activeProduct: ', activeProduct);
             activeProduct.classList.remove('active');
 
             /* END: if the active product isn't the element of thisProduct */
@@ -160,7 +158,6 @@
     }
     initOrderForm () {
       const thisProduct = this;
-      //console.log('initOrderForm START');
 
       thisProduct.form.addEventListener('submit', function(event){
         event.preventDefault();
@@ -181,14 +178,11 @@
     }
     processOrder () {
       const thisProduct = this;
-      //console.log('processOrder START');
 
       /* read data from the form */
       const formData = utils.serializeFormToObject(thisProduct.form);
-      //console.log('formData', formData);
 
       thisProduct.params = {};
-      //console.log ('thisProduct.params :', thisProduct.params);
 
       /*set variable price as thisProduct.data.price */
       let price = thisProduct.data.price;
@@ -198,14 +192,12 @@
 
         /* Save the element in thisProduct.data.params with key paramId as const param  */
         const param = thisProduct.data.params[paramId];
-        //console.log('param: ', param);
 
         /* START LOOP: for each optionId in param.options */
         for (let optionId in param.options){
 
           /* save the element in param.options with key optionId as const option */
           const option = param.options[optionId];
-          //console.log('option: ', option);
 
           /* save a selected option from option */
           const optionSelected = formData.hasOwnProperty(paramId) && formData[paramId].indexOf(optionId) > -1;
@@ -215,7 +207,7 @@
 
             /* add price of option to variable price */
             price += option.price;
-            //console.log('price: ', price);
+
           } else if (!optionSelected && option.default) {
             /* reduct price of option from price */
             price -= option.price;
@@ -224,7 +216,6 @@
           }
 
           const optionImages = thisProduct.imageWrapper.querySelectorAll('.' + paramId + '-' + optionId);
-          //console.log('optionImages: ', optionImages);
 
           /* START IF: (for images) if option is active all images should receive class active saved in classNames.menuProduct.imageVisible  */
           if (optionSelected) {
@@ -244,8 +235,6 @@
               optionImage.classList.remove(classNames.menuProduct.imageVisible);
             }
           }
-
-
         /* END LOOP: for each optionID */
         }
 
@@ -283,8 +272,6 @@
       thisWidget.value = settings.amountWidget.defaultValue;
       thisWidget.setValue(thisWidget.input.value);
       thisWidget.initActions();
-
-      //console.log('AmountWidget:', thisWidget);
     }
     getElements (element) {
       const thisWidget = this;
@@ -314,19 +301,16 @@
       const thisWidget = this;
       thisWidget.input.addEventListener ('change', function () {
         thisWidget.setValue(thisWidget.input.value);
-        //console.log('change listener click');
       });
 
       thisWidget.linkDecrease.addEventListener('click', function (event) {
         event.preventDefault();
         thisWidget.setValue(thisWidget.value - 1);
-        //console.log('less listener click');
       });
 
       thisWidget.linkIncrease.addEventListener('click', function (event) {
         event.preventDefault();
         thisWidget.setValue(thisWidget.value + 1);
-        //console.log('more listener click');
       });
     }
 
@@ -371,16 +355,12 @@
       }
 
       thisCart.dom.form = thisCart.dom.wrapper.querySelector(select.cart.form);
-      //console.log ('thisCart.dom.form: ', thisCart.dom.form);
-      thisCart.dom.telephone = thisCart.dom.wrapper.querySelector(select.cart.telephone);
-      //console.log ('thisCart.dom.telephone: ', thisCart.dom.telephone);
+      thisCart.dom.telephone = thisCart.dom.wrapper.querySelector(select.cart.phone);
       thisCart.dom.address = thisCart.dom.wrapper.querySelector(select.cart.address);
-      //console.log ('thisCart.dom.address: ', thisCart.dom.address);
     }
 
     initActions () {
       const thisCart = this;
-      //console.log ('initAction test');
       thisCart.dom.toggleTrigger.addEventListener('click', function () {
         thisCart.dom.wrapper.classList.toggle(classNames.cart.wrapperActive);
       });
@@ -400,10 +380,8 @@
       const thisCart = this;
       const generatedHTML = templates.cartProduct(menuProduct);
       const generatedDOM = utils.createDOMFromHTML(generatedHTML);
-      console.log ('adding product', menuProduct);
       thisCart.dom.productList.appendChild(generatedDOM);
       thisCart.products.push(new CartProduct(menuProduct, generatedDOM));
-      console.log ('thisCart.products: ', thisCart.products);
       thisCart.update();
     }
     update () {
@@ -417,7 +395,6 @@
       }
 
       thisCart.totalPrice = thisCart.subtotalPrice + thisCart.deliveryFee;
-      console.log ('total number: ', thisCart.totalNumber, '; subtotalPrice: ', thisCart.subtotalPrice, '; thisCart.totalPrice: ', thisCart.totalPrice);
 
       for (let key of thisCart.renderTotalsKeys) {
         for (let elem of thisCart.dom[key]) {
@@ -437,9 +414,9 @@
       const url = settings.db.url + '/' + settings.db.order;
 
       const payload = {
-        address: thisCart.dom.address,
+        address: thisCart.dom.address.value,
         totalPrice: thisCart.totalPrice,
-        telephone: thisCart.dom.telephone,
+        telephone: thisCart.dom.telephone.value,
         totalNumber: thisCart.totalNumber,
         subtotalPrice: thisCart.subtotalPrice,
         deliveryFee: thisCart.deliveryFee,
@@ -485,7 +462,6 @@
       thisCartProduct.getElements(element);
       thisCartProduct.initAmountWidget();
       thisCartProduct.initActions();
-      //console.log ('new CartProduct: ', thisCartProduct);
     }
     getElements (element) {
       const thisCartProduct = this;
@@ -521,7 +497,6 @@
       });
 
       thisCartProduct.dom.wrapper.dispatchEvent(event);
-      console.log ('remove is working');
     }
     initActions () {
       const thisCartProduct = this;
@@ -544,7 +519,6 @@
         priceSingle: thisCartProduct.priceSingle,
         params: thisCartProduct.params,
       };
-      console.log('orderedProductData:', orderedProductData);
       return orderedProductData;
     }
   }
@@ -552,7 +526,6 @@
     initMenu: function () {
       const thisApp = this;
 
-      //console.log('thisApp.data: ', thisApp.data);
 
       for (let productData in thisApp.data.products) {
         new Product(thisApp.data.products[productData].id, thisApp.data.products[productData]);
@@ -563,7 +536,6 @@
       const thisApp = this;
 
       thisApp.data = {};
-      //const url = {};
       const url = settings.db.url + '/' + settings .db.product;
 
       fetch (url)
@@ -571,7 +543,6 @@
           return rawResponse.json();
         })
         .then (function (parsedResponse) {
-          console.log ('parsedResponse', parsedResponse);
 
           /* save parsedResponse as thisApp.data.products */
           thisApp.data.products = parsedResponse;
@@ -582,13 +553,13 @@
 
     init: function () {
       const thisApp = this;
-      //console.log('*** App starting ***');
-      //console.log('thisApp:', thisApp);
-      //console.log('classNames:', classNames);
-      //console.log('settings:', settings);
-      //console.log('templates:', templates);
+      console.log('*** App starting ***');
+      console.log('thisApp:', thisApp);
+      console.log('classNames:', classNames);
+      console.log('settings:', settings);
+      console.log('templates:', templates);
       thisApp.initData();
-      //thisApp.initMenu();
+      thisApp.initMenu();
       thisApp/this.initCart();
     },
 
