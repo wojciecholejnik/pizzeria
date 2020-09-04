@@ -29,7 +29,6 @@ export const select = {
       linkIncrease: 'a[href="#more"]',
     },
   },
-
   cart: {
     productList: '.cart__order-summary',
     toggleTrigger: '.cart__summary',
