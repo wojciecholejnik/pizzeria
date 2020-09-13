@@ -186,6 +186,7 @@ class Booking {
       event.preventDefault();
       //console.log('submited');
       thisBooking.bookTable();
+      thisBooking.deleteSelection();
       alert('Reservation accepted');
     });
     thisBooking.dom.hourPicker.addEventListener('updated', function(){
@@ -198,9 +199,6 @@ class Booking {
 
   bookTable(){
     const thisBooking = this;
-
-    //const url = settings.db.url + '/' + settings.db.booking;
-    //console.log('url: ', url);
 
     const dataOrder = {
       date: thisBooking.datePicker.value,
@@ -218,8 +216,25 @@ class Booking {
         dataOrder.starters.push(starter.value);
       }
     }
+    //console.log('dataOrder: ', dataOrder);
 
-    console.log('dataOrder: ', dataOrder);
+    const url = settings.db.url + '/' + settings.db.booking;
+    //console.log('url: ', url);
+
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(dataOrder),
+    };
+
+    fetch(url, options)
+      .then(function(response){
+        return response.json();
+      }).then(function(parsedResponse){
+        console.log('parsedResponse: ', parsedResponse);
+      });
   }
 
   render(bookingElement){
