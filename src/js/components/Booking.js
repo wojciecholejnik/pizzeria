@@ -186,8 +186,6 @@ class Booking {
       event.preventDefault();
       //console.log('submited');
       thisBooking.bookTable();
-      thisBooking.deleteSelection();
-      alert('Reservation accepted');
     });
     thisBooking.dom.hourPicker.addEventListener('updated', function(){
       thisBooking.deleteSelection();
@@ -233,7 +231,11 @@ class Booking {
       .then(function(response){
         return response.json();
       }).then(function(parsedResponse){
-        console.log('parsedResponse: ', parsedResponse);
+        //console.log('parsedResponse: ', parsedResponse);
+        thisBooking.makeBooked(parsedResponse.date, parsedResponse.hour, parsedResponse.duration, parsedResponse.table);
+        thisBooking.updateDOM();
+        thisBooking.deleteSelection();
+        alert('Reservation accepted');
       });
   }
 
