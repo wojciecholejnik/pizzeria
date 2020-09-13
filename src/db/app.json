@@ -258,9 +258,9 @@
   "booking": [
     {
       "id": 1,
-      "date": "2020-09-12",
-      "hour": "16:00",
-      "table": 1,
+      "date": "2020-09-13",
+      "hour": "17:00",
+      "table": 2,
       "duration": 3,
       "ppl": 4,
       "starters": ["water"]
