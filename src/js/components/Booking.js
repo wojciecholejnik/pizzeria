@@ -99,6 +99,12 @@ class Booking {
     //console.log('thisBooking.booked', thisBooking.booked);
   }
 
+  sliderColor(){
+    const thisBooking = this;
+
+    console.log('thisBooking.booked', thisBooking.booked);
+  }
+
   makeBooked(date, hour, duration, table){
     const thisBooking = this;
 
@@ -151,6 +157,7 @@ class Booking {
           .tableBooked);
       }
     }
+    thisBooking.sliderColor();
   }
 
   selectTable(){
@@ -163,7 +170,7 @@ class Booking {
         const tableNumber = table.getAttribute(settings.booking.tableIdAttribute);
         thisBooking.bookedTable = parseInt(tableNumber);
 
-        //console.log('thisBooking.bookedTable', thisBooking.bookedTable);
+        console.log('thisBooking.bookedTable', thisBooking.bookedTable);
 
       });
     }
@@ -214,7 +221,7 @@ class Booking {
         dataOrder.starters.push(starter.value);
       }
     }
-    //console.log('dataOrder: ', dataOrder);
+    console.log('dataOrder: ', dataOrder);
 
     const url = settings.db.url + '/' + settings.db.booking;
     //console.log('url: ', url);

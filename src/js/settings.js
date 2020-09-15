@@ -39,6 +39,7 @@ export const select = {
       wrapper: '.hour-picker',
       input: 'input[type="range"]',
       output: '.output',
+      rangeSlider: '.rangeSlider'
     },
   },
   cart: {
@@ -83,6 +84,9 @@ export const classNames = {
     loading: 'loading',
     tableBooked: 'booked',
     choisedTable: 'choisedTable',
+    rangeSliderAvalible: 'rangeSlider__avalible',
+    rangeSlider2Avalible: 'rangeSlider__2avalible',
+    rangeSlider1Avalible: 'rangeSlider__1avalible',
   },
   nav: {
     active: 'active',

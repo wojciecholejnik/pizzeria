@@ -1,0 +1,98 @@
+.main {
+  margin: ($base-size * 3.5) auto;
+  padding: ($base-size * 6) ($base-size * 4);
+  padding-top: 35px;
+  background: $color-light;
+  border-bottom: 1px solid lighten($color-dark, 70%);
+  border-radius: $radius;
+
+  .main-nav {
+    @include flex(row, flex-start, space-between);
+    padding: 0;
+
+    a {
+      @extend .h1;
+      color: $color-light;
+      text-decoration: none;
+      margin-right: 0;
+      text-align: center;
+      padding: $base-size ($base-size * 2);
+      background: darken($color-dark, 5%);
+
+      width: 300px;
+      height: 120px;
+      line-height: 100px;
+      background-size: cover;
+
+      &.active {
+        background: lighten($color-dark, 75%);
+      }
+    }
+
+    .order {
+      background-image: url(../../images/pizza_img/pizza-1.jpg);
+    }
+
+    .booking {
+      background-image: url(../../images/pizza_img/pizza-2.jpg);
+    }
+
+  }
+
+  .openingHours {
+    background-color: $color-main;
+    border-top-left-radius: $radius;
+    border-top-right-radius: $radius;
+    height: 120px;
+    text-align: center;
+    color: $color-light;
+
+    h1{
+      @extend .h1;
+      padding-top: 29px ;
+      padding-bottom: 0;
+      margin-top: 5px;
+      margin-bottom: 0;
+    }
+
+    h2{
+      @extend .h2;
+      padding-top: 0;
+      margin-top: 2px;
+    }
+  }
+
+  // owl-carousele
+  .image img {
+    width: 226.44px;
+    height: 226.44px;
+    object-fit: cover;
+  }
+
+  .owl-stage-outer {
+    height: 230px;
+  }
+
+  .opinions-wrapper {
+    height: auto;
+  }
+
+  .opinions {
+    display: flex;
+    margin: 50px 0;
+
+    .opinions-content {
+      margin: 0 0 0 30px;
+      padding: 0;
+
+      h3 {
+        margin: 0;
+        text-transform: uppercase;
+      }
+
+      p:last-child {
+        font-style: italic;
+      }
+    }
+  }
+}

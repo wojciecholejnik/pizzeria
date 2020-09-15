@@ -68,6 +68,7 @@
     border: 0;
     transition-timing-function: cubic-bezier(0, 1, 0, 1);
     transition: transform 100ms;
+    z-index: 2;
 
     &::after {
       display: none;
@@ -203,3 +204,34 @@
   @include flex(row, flex-start, space-between);
   margin: ($base-size * 4) auto;
 }
+
+// .rangeSlider{
+//   &::after {
+//     box-sizing: border-box;
+//     border: 1px solid red;
+//     content: '';
+//     position: absolute;
+//     background: red;
+//     width: 100%;
+//     height: 100%;
+//     z-index: 1;
+//   }
+// }
+
+.rangeSliderTest.colorContainer{
+  width: 100%;
+  height: 18%;
+  display: inline-block;
+  position: absolute;
+  display: flex;
+  flex: 24;
+
+  content: '';
+
+  .rangeSliderTest.1 {
+    background-color: red;
+    z-index: 1;
+  }
+
+}
+

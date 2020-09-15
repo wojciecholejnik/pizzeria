@@ -20,7 +20,9 @@ const app = {
         pageMatchingHash = page.id;
         break;
       }
+      //console.log(thisApp.pages);
     }
+
 
     thisApp.activatePage(pageMatchingHash);
 
