@@ -102,7 +102,26 @@ class Booking {
   sliderColor(){
     const thisBooking = this;
 
-    console.log('thisBooking.booked', thisBooking.booked);
+    const sliderLayer = document.createElement('div');
+    sliderLayer.className = 'slider-color';
+
+    const rangeSlider = document.querySelector('.rangeSlider');
+    rangeSlider.removeChild(rangeSlider.childNodes[0]);
+
+    for(let hour = 12; hour < 25.5; hour += 0.5){
+      const div = document.createElement('div');
+
+      if(thisBooking.booked[thisBooking.date] && thisBooking.booked[thisBooking.date][hour]){
+        div.className = 'available busy' + thisBooking.booked[thisBooking.date][hour].length;
+      } else {
+        div.className = 'available';
+      }
+
+      sliderLayer.appendChild(div);
+    }
+    rangeSlider.prepend(sliderLayer);
+
+    //console.log('thisBooking.booked', thisBooking.booked);
   }
 
   makeBooked(date, hour, duration, table){
